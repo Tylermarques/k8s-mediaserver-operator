@@ -12,7 +12,7 @@ general:
   pgid: 1000
   #Persistent storage selections and pathing
   storage:
-    customVolume: false  #set to true if not using a PVC (must provide volume below)
+    customVolume: false #set to true if not using a PVC (must provide volume below)
     pvcName: mediaserver-pvc
     size: 5Gi
     pvcStorageClass: ""
@@ -25,12 +25,12 @@ general:
       transmission: transmission
       sabnzbd: sabnzbd
       config: config
+      music: media/music
     volumes: {}
     #  hostPath:
     #    path: /mnt/share
   ingress:
     ingressClassName: ""
-
 sonarr:
   enabled: true
   container:
@@ -52,16 +52,45 @@ sonarr:
       secretName: ""
   resources: {}
   volume: {}
-    #name: pvc-sonarr-config
-    #storageClassName: longhorn
-    #annotations:
-    #  my-annotation/test: my-value
-    #labels:
-    #  my-label/test: my-other-value
-    #accessModes: ReadWriteOnce
-    #storage: 5Gi
-    #selector: {}
-
+  #name: pvc-sonarr-config
+  #storageClassName: longhorn
+  #annotations:
+  #  my-annotation/test: my-value
+  #labels:
+  #  my-label/test: my-other-value
+  #accessModes: ReadWriteOnce
+  #storage: 5Gi
+  #selector: {}
+lidarr:
+  enabled: true
+  container:
+    image: docker.io/linuxserver/lidarr
+    nodeSelector: {}
+    port: 8686
+  service:
+    type: ClusterIP
+    port: 8686
+    nodePort:
+    extraLBService: false
+    # Defines an additional LB service, requires cloud provider service or MetalLB
+  ingress:
+    enabled: true
+    annotations: {}
+    path: /lidarr
+    tls:
+      enabled: false
+      secretName: ""
+  resources: {}
+  volume: {}
+  #name: pvc-sonarr-config
+  #storageClassName: longhorn
+  #annotations:
+  #  my-annotation/test: my-value
+  #labels:
+  #  my-label/test: my-other-value
+  #accessModes: ReadWriteOnce
+  #storage: 5Gi
+  #selector: {}
 radarr:
   enabled: true
   container:
@@ -83,14 +112,13 @@ radarr:
       secretName: ""
   resources: {}
   volume: {}
-    #name: pvc-radarr-config
-    #storageClassName: longhorn
-    #annotations: {}
-    #labels: {}
-    #accessModes: ReadWriteOnce
-    #storage: 5Gi
-    #selector: {}
-
+  #name: pvc-radarr-config
+  #storageClassName: longhorn
+  #annotations: {}
+  #labels: {}
+  #accessModes: ReadWriteOnce
+  #storage: 5Gi
+  #selector: {}
 jackett:
   enabled: true
   container:
@@ -119,7 +147,6 @@ jackett:
   #  accessModes: ReadWriteOnce
   #  storage: 5Gi
   #  selector: {}
-
 transmission:
   enabled: true
   container:
@@ -163,7 +190,6 @@ transmission:
   #  accessModes: ReadWriteOnce
   #  storage: 5Gi
   #  selector: {}
-
 sabnzbd:
   enabled: true
   container:
@@ -201,10 +227,9 @@ sabnzbd:
   #  accessModes: ReadWriteOnce
   #  storage: 5Gi
   #  selector: {}
-
 prowlarr:
   enabled: true
-  container: 
+  container:
     image: docker.io/linuxserver/prowlarr
     tag: develop
     nodeSelector: {}
@@ -212,7 +237,7 @@ prowlarr:
   service:
     type: ClusterIP
     port: 9696
-    nodePort: 
+    nodePort:
     extraLBService: false
   ingress:
     enabled: true
@@ -230,7 +255,6 @@ prowlarr:
   #  accessModes: ReadWriteOnce
   #  storage: 5Gi
   #  selector: {}
-
 plex:
   enabled: true
   claim: "CHANGEME"

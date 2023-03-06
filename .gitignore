@@ -13,3 +13,6 @@ bin
 *.swo
 *~
 kubeserver.yml
+
+# Your custom settings
+my-values.yml
